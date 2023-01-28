@@ -1,1 +1,11 @@
 import boto3
+
+aws_client = boto3.client("ec2")
+vpcs = aws_client.describe_vpcs()
+vpcs = vpcs['Vpcs']
+
+for vpc in vpcs:
+    print(vpc["VpcId"])
+    cidrs = (vpc["CidrBlockAssociationSet"])
+    for cidr in cidrs:
+        print(cidr["CidrBlockState"])
