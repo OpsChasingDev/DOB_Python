@@ -1,0 +1,3 @@
+# ignoring PyCharm files
+*/.idea
+*/venv
