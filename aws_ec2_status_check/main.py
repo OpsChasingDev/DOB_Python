@@ -6,7 +6,7 @@ aws_resource = boto3.resource("ec2", region_name="us-east-1")
 
 # return health check of all ec2 instances
 def instance_status_check():
-    statuses = aws_client.describe_instance_status()
+    statuses = aws_client.describe_instance_status(IncludeAllInstances=True)
     for status in statuses["InstanceStatuses"]:
         instance_status = status["InstanceStatus"]["Status"]
         system_status = status["SystemStatus"]["Status"]
