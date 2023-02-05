@@ -9,7 +9,7 @@ def create_snapshot():
         Filters=[
             {
                 'Name': 'tag:Name',
-                'Value': ['prod']
+                'Values': ['prod']
             }
         ]
     )
