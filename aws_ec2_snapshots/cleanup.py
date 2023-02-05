@@ -19,3 +19,10 @@ for now_sorted in timestamp:
 print('######_UNSORTED_#####')
 for snapshot in snapshots['Snapshots']:
     print(snapshot['StartTime'])
+
+# start loop at specific index
+for time in timestamp[2:]:
+    print(time['SnapshotId'])
+    aws_client.delete_snapshot(
+        SnapshotId=time['SnapshotId']
+    )
