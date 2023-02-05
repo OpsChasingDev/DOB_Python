@@ -49,9 +49,15 @@ new_volume = aws_client.create_volume(
     ]
 )
 
-# attach newly created volume to ec2 instance
-aws_resource.Instance(instance_id).attach_volume(
-    VolumeId=new_volume['VolumeId'],
-    # the device has the last character manually modified because we cannot attach the new volume on the same device already added to the ec2 instance
-    Device='/dev/xvdb'
-)
+# loop to verify the new volume is ready to be attached
+while True:
+    vol = aws_resource.Volume(new_volume['VolumeId'])
+    print(vol.state)
+    # attach newly created volume to ec2 instance when volume is ready
+    if vol.state == 'available':
+        aws_resource.Instance(instance_id).attach_volume(
+            VolumeId=new_volume['VolumeId'],
+            # the device has the last character manually modified because we cannot attach the new volume on the same device already added to the ec2 instance
+            Device='/dev/xvdb'
+        )
+        break
