@@ -62,4 +62,8 @@ except Exception as ex:
     nginx_server.reboot()
 
     # restart app
-    restart_app()
+    while True:
+        nginx_server = client.load(linode_api4.Instance, linode_id)
+        if nginx_server.status == 'running':
+            restart_app()
+            break
