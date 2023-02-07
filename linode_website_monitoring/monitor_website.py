@@ -1,5 +1,9 @@
 import requests
 import smtplib
+import os
+
+EMAIL_ADDRESS = os.environ.get('EMAIL_ADDRESS')
+EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 
 response = requests.get('http://143.42.119.228:8080/')
 if response.status_code == 200:
