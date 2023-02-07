@@ -14,4 +14,6 @@ else:
     with smtplib.SMTP('stapletonfamily-net02c.mail.protection.outlook.com', 25) as email:
         email.starttls()
         email.ehlo()
-        email.login("EMAIL_ADDRESS", "EMAIL_PASSWORD")
+        email.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+        message = "Website is down!!!\nfix it, yo"
+        email.sendmail(EMAIL_ADDRESS, EMAIL_ADDRESS, message)
