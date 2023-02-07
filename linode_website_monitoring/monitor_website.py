@@ -3,6 +3,7 @@ import smtplib
 import os
 import paramiko
 import linode_api4
+import time
 
 public_ip = '143.42.119.228'
 docker_container_id = '75605139c86c'
@@ -65,5 +66,6 @@ except Exception as ex:
     while True:
         nginx_server = client.load(linode_api4.Instance, linode_id)
         if nginx_server.status == 'running':
+            time.sleep(5)
             restart_app()
             break
