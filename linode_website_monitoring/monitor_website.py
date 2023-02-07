@@ -2,12 +2,16 @@ import requests
 import smtplib
 import os
 import paramiko
+import linode_api4
 
 public_ip = '143.42.119.228'
 docker_container_id = '75605139c86c'
+linode_id = '42425285'
 
+# set up env vars in system
 EMAIL_ADDRESS = os.environ.get('EMAIL_ADDRESS')
 EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+LINODE_TOKEN = os.environ.get('LINODE_TOKEN')
 
 def send_email(email_message):
     with smtplib.SMTP('stapletonfamily-net02c.mail.protection.outlook.com', 25) as email:
@@ -42,4 +46,9 @@ try:
         print("Application restarted")
 except Exception as ex:
     print(f'exception: {ex}')
-    send_email(f"Connection timed out with the below exception:\n{ex}")
+    #send_email(f"Connection timed out with the below exception:\n{ex}")
+
+    # restart server using linode library
+    client = linode_api4.LinodeClient(LINODE_TOKEN)
+    nginx_server = client.load(linode_api4.Instance, linode_id)
+    nginx_server.reboot()
