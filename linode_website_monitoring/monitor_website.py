@@ -4,6 +4,8 @@ import os
 import paramiko
 
 public_ip = '143.42.119.228'
+docker_container_id = '75605139c86c'
+
 EMAIL_ADDRESS = os.environ.get('EMAIL_ADDRESS')
 EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 
@@ -34,8 +36,10 @@ try:
             hostname=public_ip,
             username='root',
             key_filename='C:\\Users\\Robert\\.ssh\\id_rsa')
-        stdin, stdout, stderr = ssh.exec_command('docker ps')
+        stdin, stdout, stderr = ssh.exec_command(f'docker start {docker_container_id}')
         print(stdout.readlines())
+        ssh.close()
+        print("Application restarted")
 except Exception as ex:
     print(f'exception: {ex}')
     send_email(f"Connection timed out with the below exception:\n{ex}")
