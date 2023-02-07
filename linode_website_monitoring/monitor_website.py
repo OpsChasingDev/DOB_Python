@@ -10,4 +10,4 @@ else:
     with smtplib.SMTP('stapletonfamily-net02c.mail.protection.outlook.com', 25) as email:
         email.starttls()
         email.ehlo()
-        email.login("robert@stapleton-family.net", "")
+        email.login("EMAIL_ADDRESS", "EMAIL_PASSWORD")
