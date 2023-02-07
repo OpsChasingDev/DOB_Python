@@ -57,7 +57,7 @@ def send_email(email_message):
 try:
     response = requests.get(f'http://{public_ip}:8080/')
     # checks to see if app is responding on listening port
-    if False: #response.status_code == 200:
+    if response.status_code == 200:
         print('Site is ok')
     else:
         print('Website is down!!!')
