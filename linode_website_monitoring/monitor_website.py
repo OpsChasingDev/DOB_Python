@@ -4,6 +4,7 @@ import os
 import paramiko
 import linode_api4
 import time
+import schedule
 
 public_ip = '143.42.119.228'
 docker_container_id = '75605139c86c'
@@ -52,18 +53,24 @@ def send_email(email_message):
         message = f"Website is down!!!\n{email_message}"
         email.sendmail(EMAIL_ADDRESS, EMAIL_ADDRESS, message)
 
+def monitor_app():
+    # checks to see if a response is given from the server at all
+    try:
+        response = requests.get(f'http://{public_ip}:8080/')
+        # checks to see if app is responding on listening port
+        if response.status_code == 200:
+            print('Site is ok')
+        else:
+            print('Website is down!!!')
+            #send_email(f"Returned http status {response.status_code}.")
+            restart_app()
+    except Exception as ex:
+        print(f'exception: {ex}')
+        #send_email(f"Connection timed out with the below exception:\n{ex}")
+        restart_server_and_app()
 
-# checks to see if a response is given from the server at all
-try:
-    response = requests.get(f'http://{public_ip}:8080/')
-    # checks to see if app is responding on listening port
-    if response.status_code == 200:
-        print('Site is ok')
-    else:
-        print('Website is down!!!')
-        #send_email(f"Returned http status {response.status_code}.")
-        restart_app()
-except Exception as ex:
-    print(f'exception: {ex}')
-    #send_email(f"Connection timed out with the below exception:\n{ex}")
-    restart_server_and_app()
+
+schedule.every(5).minutes.do(monitor_app)
+
+while True:
+    schedule.run_pending()
